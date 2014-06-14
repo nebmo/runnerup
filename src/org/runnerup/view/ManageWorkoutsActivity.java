@@ -265,7 +265,7 @@ public class ManageWorkoutsActivity extends Activity implements Constants {
 		pref.edit().putString("advancedWorkout", fileName).commit();
 
 		Intent intent = new Intent(this, MainLayout.class);
-		intent.putExtra("mode", StartActivity.TAB_ADVANCED);
+		intent.putExtra("mode", StartFragment.TAB_ADVANCED);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();

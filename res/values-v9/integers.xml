@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        FROYO does not have @integer/google_play_services_version therefore we must wrap the value
+    -->
+    <integer name="google_play_services_version_wrapper">@integer/google_play_services_version</integer>
+</resources>

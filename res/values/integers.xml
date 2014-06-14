@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        FROYO does not have @integer/google_play_services_version therefore we just set this to
+        a value so it works in the manifest
+    -->
+    <integer name="google_play_services_version_wrapper">0</integer>
+</resources>

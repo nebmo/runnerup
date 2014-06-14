@@ -16,22 +16,6 @@
  */
 package org.runnerup.view;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.runnerup.R;
-import org.runnerup.db.DBHelper;
-import org.runnerup.util.Constants.DB;
-import org.runnerup.util.Formatter;
-import org.runnerup.util.HRZones;
-import org.runnerup.widget.TitleSpinner;
-import org.runnerup.widget.TitleSpinner.OnSetValueListener;
-import org.runnerup.workout.Feedback;
-import org.runnerup.workout.Workout;
-import org.runnerup.workout.WorkoutBuilder;
-import org.runnerup.workout.feedback.RUTextToSpeech;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -56,6 +40,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import org.runnerup.R;
+import org.runnerup.db.DBHelper;
+import org.runnerup.util.Constants.DB;
+import org.runnerup.util.Formatter;
+import org.runnerup.util.HRZones;
+import org.runnerup.widget.TitleSpinner;
+import org.runnerup.widget.TitleSpinner.OnSetValueListener;
+import org.runnerup.workout.Feedback;
+import org.runnerup.workout.Workout;
+import org.runnerup.workout.WorkoutBuilder;
+import org.runnerup.workout.feedback.RUTextToSpeech;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class AudioCueSettingsActivity extends PreferenceActivity {
@@ -86,7 +86,7 @@ public class AudioCueSettingsActivity extends PreferenceActivity {
 	         prefMgr.setSharedPreferencesMode(MODE_PRIVATE);
 		}
 
-		addPreferencesFromResource(R.layout.audio_cue_settings);
+		addPreferencesFromResource(R.xml.audio_cue_settings);
 		setContentView(R.layout.settings_wrapper);
 
 		{
@@ -102,7 +102,7 @@ public class AudioCueSettingsActivity extends PreferenceActivity {
 		}
 
 		HRZones hrZones = new HRZones(this);
-		boolean hasHR = SettingsActivity.hasHR(this);
+		boolean hasHR = SettingsFragment.hasHR(this);
 		boolean hasHRZones = hrZones.isConfigured();
 
 		if (!hasHR || !hasHRZones) {

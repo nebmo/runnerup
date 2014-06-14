@@ -16,25 +16,6 @@
  */
 package org.runnerup.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
-import org.runnerup.R;
-import org.runnerup.content.WorkoutFileProvider;
-import org.runnerup.content.ActivityProvider;
-import org.runnerup.db.ActivityCleaner;
-import org.runnerup.db.DBHelper;
-import org.runnerup.export.UploadManager;
-import org.runnerup.export.Uploader;
-import org.runnerup.export.Uploader.Feature;
-import org.runnerup.util.Bitfield;
-import org.runnerup.util.Constants;
-import org.runnerup.util.Formatter;
-import org.runnerup.widget.WidgetUtil;
-import org.runnerup.workout.Intensity;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,7 +31,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,8 +66,27 @@ import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 
+import org.runnerup.R;
+import org.runnerup.content.ActivityProvider;
+import org.runnerup.content.WorkoutFileProvider;
+import org.runnerup.db.ActivityCleaner;
+import org.runnerup.db.DBHelper;
+import org.runnerup.export.UploadManager;
+import org.runnerup.export.Uploader;
+import org.runnerup.export.Uploader.Feature;
+import org.runnerup.util.Bitfield;
+import org.runnerup.util.Constants;
+import org.runnerup.util.Formatter;
+import org.runnerup.widget.WidgetUtil;
+import org.runnerup.workout.Intensity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 @TargetApi(Build.VERSION_CODES.FROYO)
-public class DetailActivity extends FragmentActivity implements Constants {
+public class DetailActivity extends ActionBarActivity implements Constants {
 
 	long mID = 0;
 	DBHelper mDBHelper = null;

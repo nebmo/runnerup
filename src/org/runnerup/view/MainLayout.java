@@ -16,20 +16,8 @@
  */
 package org.runnerup.view;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.runnerup.R;
-import org.runnerup.db.DBHelper;
-import org.runnerup.util.Constants.DB;
-import org.runnerup.util.FileUtil;
-import org.runnerup.util.Formatter;
-
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Service;
-import android.app.TabActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,100 +26,188 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.TabHost;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-@TargetApi(Build.VERSION_CODES.FROYO)
-public class MainLayout extends TabActivity {
+import org.runnerup.R;
+import org.runnerup.db.DBHelper;
+import org.runnerup.drawer.DrawerItem;
+import org.runnerup.util.Constants.DB;
+import org.runnerup.util.FileUtil;
+import org.runnerup.util.Formatter;
 
-	private Drawable getDrawable(int resId) {
-		Drawable d = getResources().getDrawable(resId);
-		return d;
-	}
-	
-	private enum UpgradeState { UNKNOWN, NEW, UPGRADE, DOWNGRADE, SAME };
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainLayout extends ActionBarActivity {
+    private ActionBarDrawerToggle drawerToggle;
+    private enum UpgradeState { UNKNOWN, NEW, UPGRADE, DOWNGRADE, SAME };
+    private ListView drawerList;
+    private DrawerLayout drawerLayout;
+    private int title;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		int versionCode = 0;
-		UpgradeState upgradeState = UpgradeState.UNKNOWN;
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		Editor editor = pref.edit();
-		try {
-			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			versionCode = pInfo.versionCode;
-			int version = pref.getInt("app-version", -1);
-			if (version == -1) {
-				upgradeState = UpgradeState.NEW;
-			} else if (versionCode == version) {
-				upgradeState = UpgradeState.SAME;
-			} else if (versionCode > version) {
-				upgradeState = UpgradeState.UPGRADE;
-			} else if (versionCode < version) {
-				upgradeState = UpgradeState.DOWNGRADE;
-			}
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		editor.putInt("app-version", versionCode);
-		boolean km = Formatter.getUseKilometers(pref, editor);
+        getSupportActionBar().setTitle(R.string.app_name);
 
-		if (upgradeState == UpgradeState.NEW) {
-			editor.putString(getResources().getString(R.string.pref_autolap),
-					Double.toString(km ? Formatter.km_meters : Formatter.mi_meters));
-		}
-		editor.commit();
-		
-		// clear basicTargetType between application startup/shutdown
-		pref.edit().remove("basicTargetType").commit();
-		
-		System.err.println("app-version: " + versionCode + ", upgradeState: " + upgradeState + ", km: " + km);
-		
-		PreferenceManager.setDefaultValues(this, R.layout.settings, false);
-		PreferenceManager.setDefaultValues(this, R.layout.audio_cue_settings, true);
-		
-		TabHost tabHost = getTabHost(); // The activity TabHost
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ListView) findViewById(R.id.left_drawer);
 
-		tabHost.addTab(tabHost.newTabSpec("Start")
-				.setIndicator("Start", getDrawable(R.drawable.ic_tab_main))
-				.setContent(new Intent(this, StartActivity.class)));
+        final List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
+        drawerItems.add(new DrawerItem(R.string.nav_start, R.drawable.ic_tab_main, StartFragment.class));
+        drawerItems.add(new DrawerItem(R.string.nav_feed, R.drawable.ic_tab_feed, FeedFragment.class));
+        drawerItems.add(new DrawerItem(R.string.nav_history, R.drawable.ic_tab_history, HistoryFragment.class));
+        drawerItems.add(new DrawerItem(R.string.nav_settings, R.drawable.ic_tab_setup, SettingsFragment.class));
+        drawerList.setAdapter(new NavDrawerAdapter(this, drawerItems));
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DrawerItem item = (DrawerItem) parent.getItemAtPosition(position);
+                if(item.getFragmentClass().equals(SettingsFragment.class)) {
+                    startActivity(new Intent(MainLayout.this, SettingsActivity.class));
+                    drawerLayout.closeDrawer(drawerList);
+                    return;
+                }
 
-		tabHost.addTab(tabHost.newTabSpec("Feed")
-				.setIndicator("Feed", getDrawable(R.drawable.ic_tab_feed))
-				.setContent(new Intent(this, FeedActivity.class)));
+                selectItem(position, item);
+            }
+        });
 
-		tabHost.addTab(tabHost.newTabSpec("History")
-				.setIndicator("History", getDrawable(R.drawable.ic_tab_history))
-				.setContent(new Intent(this, HistoryActivity.class)));
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(title);
+                supportInvalidateOptionsMenu();
+            }
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(R.string.app_name);
+                supportInvalidateOptionsMenu();
+            }
+        };
+        drawerLayout.setDrawerListener(drawerToggle);
 
-		tabHost.addTab(tabHost.newTabSpec("Settings")
-				.setIndicator("Settings", getDrawable(R.drawable.ic_tab_setup))
-				.setContent(new Intent(this, SettingsActivity.class)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-		// Set tabs Colors
-		tabHost.setBackgroundColor(Color.BLACK);
-		tabHost.getTabWidget().setBackgroundColor(Color.BLACK);
-		tabHost.setCurrentTab(0);
+        selectItem(0, drawerItems.get(0));
 
-		if (upgradeState == UpgradeState.UPGRADE) {
-			whatsNew();
-		}
-
-		handleBundled(getApplicationContext().getAssets(), "bundled", getFilesDir().getPath()+"/..");
+        initPreferences();
 	}
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position, DrawerItem item) {
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment = null;
+        try {
+            fragment = item.getFragmentClass().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        drawerList.setItemChecked(position, true);
+        setTitle(item.getTitleId());
+        drawerLayout.closeDrawer(drawerList);
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(titleId);
+
+        this.title = titleId;
+        getSupportActionBar().setTitle(titleId);
+    }
+
+    private void initPreferences() {
+        int versionCode = 0;
+        UpgradeState upgradeState = UpgradeState.UNKNOWN;
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        Editor editor = pref.edit();
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionCode = pInfo.versionCode;
+            int version = pref.getInt("app-version", -1);
+            if (version == -1) {
+                upgradeState = UpgradeState.NEW;
+            } else if (versionCode == version) {
+                upgradeState = UpgradeState.SAME;
+            } else if (versionCode > version) {
+                upgradeState = UpgradeState.UPGRADE;
+            } else if (versionCode < version) {
+                upgradeState = UpgradeState.DOWNGRADE;
+            }
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        editor.putInt("app-version", versionCode);
+        boolean km = Formatter.getUseKilometers(pref, editor);
+
+        if (upgradeState == UpgradeState.NEW) {
+            editor.putString(getResources().getString(R.string.pref_autolap),
+                    Double.toString(km ? Formatter.km_meters : Formatter.mi_meters));
+        }
+        editor.commit();
+
+        // clear basicTargetType between application startup/shutdown
+        pref.edit().remove("basicTargetType").commit();
+
+        System.err.println("app-version: " + versionCode + ", upgradeState: " + upgradeState + ", km: " + km);
+
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.audio_cue_settings, true);
+
+        if (upgradeState == UpgradeState.UPGRADE) {
+            whatsNew();
+        }
+
+        handleBundled(getApplicationContext().getAssets(), "bundled", getFilesDir().getPath()+"/..");
+    }
 
 	void handleBundled (AssetManager mgr, String src, String dst) {
 		String list[] = null;
@@ -221,21 +297,32 @@ public class MainLayout extends TabActivity {
 		return true;
 	}
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        //boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-		Intent i = null;
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
 		switch (item.getItemId()) {
 		case R.id.menu_accounts:
-			i = new Intent(this, AccountListActivity.class);
+            startActivity(new Intent(this, AccountListActivity.class));
 			break;
 		case R.id.menu_workouts:
-			i = new Intent(this, ManageWorkoutsActivity.class);
+            startActivity(new Intent(this, ManageWorkoutsActivity.class));
 			break;
 		case R.id.menu_audio_cues:
-			i = new Intent(this, AudioCueSettingsActivity.class);
+            startActivity(new Intent(this, AudioCueSettingsActivity.class));
 			break;
 		case R.id.menu_settings:
-			getTabHost().setCurrentTab(3);
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case R.id.menu_rate:
 			onRateClick.onClick(null);
@@ -243,9 +330,6 @@ public class MainLayout extends TabActivity {
 		case R.id.menu_whatsnew:
 			whatsNew();
 			break;
-		}
-		if (i != null) {
-			startActivity(i);
 		}
 		return true;
 	}
