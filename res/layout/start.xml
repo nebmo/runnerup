@@ -44,7 +44,8 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@android:id/tabs" >
+                android:layout_below="@android:id/tabs"
+                android:padding="16dp">
                 
                 <include layout="@layout/start_basic" />
                 <include layout="@layout/start_interval" />
@@ -59,7 +60,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_above="@+id/startButtons" >
+        android:layout_above="@+id/startButtons"
+        android:layout_marginLeft="16dp">
 
 	<TextView
         android:id="@+id/gpsInfoText"
@@ -95,6 +97,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         >
    	<Button
         android:id="@+id/startButton"
