@@ -404,9 +404,11 @@ public class RunActivity extends Activity implements TickListener {
 		activityPace.setText(formatter.formatPace(Formatter.TXT_SHORT, ap));
 
 		double ahr = workout.getHeartRate(Scope.WORKOUT);
+		int ac = workout.getCadence(Scope.WORKOUT);
 		double ld = workout.getDistance(Scope.LAP);
 		double lt = workout.getTime(Scope.LAP);
 		double lp = workout.getPace(Scope.LAP);
+		int lc = workout.getCadence(Scope.LAP);
 		lapTime.setText(formatter.formatElapsedTime(Formatter.TXT_LONG, Math.round(lt)));
 		lapDistance.setText(formatter.formatDistance(Formatter.TXT_LONG, Math.round(ld)));
 		lapPace.setText(formatter.formatPace(Formatter.TXT_SHORT, lp));
@@ -422,6 +424,7 @@ public class RunActivity extends Activity implements TickListener {
 		intervalDistance.setText(formatter.formatDistance(Formatter.TXT_LONG, Math.round(id)));
 		intervalPace.setText(formatter.formatPace(Formatter.TXT_SHORT, ip));
 		double ihr = workout.getHeartRate(Scope.STEP);
+		int ic = workout.getCadence(Scope.STEP);
 		if (mGpsTracker.isHRConnected()) {
 			lapHr.setText(formatter.formatHeartRate(Formatter.TXT_SHORT, lhr));
 			intervalHr.setText(formatter.formatHeartRate(Formatter.TXT_SHORT, ihr));
@@ -431,10 +434,13 @@ public class RunActivity extends Activity implements TickListener {
 			intervalHr.setVisibility(View.VISIBLE);
 			activityHeaderHr.setVisibility(View.VISIBLE);
 		} else {
-			activityHr.setVisibility(View.GONE);
-			lapHr.setVisibility(View.GONE);
-			intervalHr.setVisibility(View.GONE);
-			activityHeaderHr.setVisibility(View.GONE);
+			lapHr.setText(formatter.formatHeartRate(Formatter.TXT_SHORT, mGpsTracker.getCurrentCadenceValue()));
+			intervalHr.setText(formatter.formatHeartRate(Formatter.TXT_SHORT, ic));
+			activityHr.setText(formatter.formatHeartRate(Formatter.TXT_SHORT, ac));
+			activityHr.setVisibility(View.VISIBLE);
+			lapHr.setVisibility(View.VISIBLE);
+			intervalHr.setVisibility(View.VISIBLE);
+			activityHeaderHr.setVisibility(View.VISIBLE);
 		}
 		Step curr = workout.getCurrentStep();
 		if (curr != currentStep) {

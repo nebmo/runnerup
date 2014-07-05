@@ -28,6 +28,7 @@ import org.runnerup.hr.HRDeviceRef;
 import org.runnerup.hr.HRManager;
 import org.runnerup.hr.HRProvider;
 import org.runnerup.hr.HRProvider.HRClient;
+import org.runnerup.pedometer.AccelerometerCadenceProvider;
 import org.runnerup.util.Constants;
 import org.runnerup.workout.Workout;
 
@@ -83,7 +84,9 @@ public class GpsTracker extends android.app.Service implements
 	double mHeartbeats = 0;
 	double mHeartbeatMillis = 0; // since we might loose HRM connectivity...
 	long mMaxHR = 0;
-	
+	private AccelerometerCadenceProvider mCadenceProvider;
+	private int mCadenceSum;
+
 	enum State {
 		INIT, LOGGING, STARTED, PAUSED,
 		ERROR /* Failed to init GPS */
@@ -175,12 +178,17 @@ public class GpsTracker extends android.app.Service implements
 		}
 		
 		startHRMonitor();
+		startCadenceMonitor();
 		
 		UploadManager u = new UploadManager(this);
 		u.loadLiveLoggers(liveLoggers);
 		u.close();
 	}
-	
+
+	private void startCadenceMonitor() {
+		mCadenceProvider = new AccelerometerCadenceProvider(this);
+	}
+
 	public boolean isLogging() {
 		switch (state) {
 		case ERROR:
@@ -221,11 +229,13 @@ public class GpsTracker extends android.app.Service implements
 		mElapsedDistance = 0;
 		mHeartbeats = 0;
 		mHeartbeatMillis = 0;
+		mCadenceSum = 0;
 		mMaxHR = 0;
 		// TODO: check if mLastLocation is recent enough
 		mActivityLastLocation = null;
 		setNextLocationType(DB.LOCATION.TYPE_START); // New location update will
 														// be tagged with START
+		mCadenceProvider.start();
 	}
 	
 	public void startOrResume() {
@@ -311,6 +321,7 @@ public class GpsTracker extends android.app.Service implements
 		String key[] = { Long.toString(mActivityId) };
 		mDB.update(DB.ACTIVITY.TABLE, tmp, "_id = ?", key);
 		state = State.PAUSED;
+		mCadenceProvider.stop();
 	}
 
 	private void internalOnLocationChanged(Location arg0) {
@@ -416,6 +427,7 @@ public class GpsTracker extends android.app.Service implements
 		
 		if (state == State.STARTED) {
 			Integer hrValue = getCurrentHRValue(now, MAX_HR_AGE);
+			Integer cadenceValue = getCurrentCadenceValue();
 			if (mActivityLastLocation != null) {
 				double timeDiff = (double) (arg0.getTime() - mActivityLastLocation
 						.getTime());
@@ -436,6 +448,9 @@ public class GpsTracker extends android.app.Service implements
 					mHeartbeats += (hrValue * timeDiff) / (60 * 1000);
 					mHeartbeatMillis += timeDiff; // TODO handle loss of HRM connection
 					mMaxHR = Math.max(hrValue, mMaxHR);
+				}
+				if (cadenceValue != null) {
+					mCadenceSum += (cadenceValue * timeDiff) / (60 * 1000);
 				}
 			}
 			mActivityLastLocation = arg0;
@@ -603,6 +618,13 @@ public class GpsTracker extends android.app.Service implements
 
 		return hrProvider.getHRValue();
 	}
+
+	public Integer getCurrentCadenceValue() {
+		if (mCadenceProvider == null) {
+			return null;
+		}
+		return mCadenceProvider.getCadenceValue();
+	}
 		
 	public Integer getCurrentHRValue() {
 		return getCurrentHRValue(System.currentTimeMillis(), 3000);
@@ -633,5 +655,9 @@ public class GpsTracker extends android.app.Service implements
 
 	public double getHeartbeats() {
 		return mHeartbeats;
+	}
+
+	public int getCadenceSum() {
+		return mCadenceSum;
 	}
 }

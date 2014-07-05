@@ -359,6 +359,44 @@ public class Workout implements WorkoutComponent {
 		return 0;
 	}
 
+	int getCadenceSum(Scope scope) {
+		switch (scope) {
+			case WORKOUT:
+				return gpsTracker.getCadenceSum();
+			case STEP:
+			case LAP:
+				if (currentStep != null)
+					return currentStep.getCadenceSum(this, scope);
+				return 0;
+			case CURRENT:
+				return 0;
+		}
+		return 0;
+	}
+
+	public int getCadence(Scope scope) {
+		switch(scope) {
+			case CURRENT: {
+				Integer val = gpsTracker.getCurrentCadenceValue();
+				if (val == null)
+					return 0;
+				return val;
+			}
+			case LAP:
+			case STEP:
+			case WORKOUT:
+				break;
+		}
+
+		double t = getTime(scope);       // in seconds
+		int b = getCadenceSum(scope); // total (estimated) cadence during workout
+
+		if (t != 0) {
+			return (int)Math.round((60 * b) / t); // cadence
+		}
+		return 0;
+	}
+
 	public double getHeartRate(Scope scope) {
 		switch(scope) {
 		case CURRENT: {

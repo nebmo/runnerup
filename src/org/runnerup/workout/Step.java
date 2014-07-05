@@ -187,20 +187,24 @@ public class Step implements TickComponent {
 	double stepStartTime = 0;
 	double stepStartDistance = 0;
 	double stepStartHeartbeats = 0;
+	int stepCadenceSum = 0;
 	double lapStartTime = 0;
 	double lapStartDistance = 0;
 	double lapStartHeartbeats = 0;
+	int lapCadenceSum = 0;
 
 	@Override
 	public void onStart(Scope what, Workout s) {
 		double time = s.getTime(Scope.WORKOUT);
 		double dist = s.getDistance(Scope.WORKOUT);
 		double beats = s.getHeartbeats(Scope.WORKOUT);
-		
+		int cadence = s.getCadenceSum(Scope.WORKOUT);
+
 		if (what == Scope.STEP) {
 			stepStartTime = time;
 			stepStartDistance = dist;
 			stepStartHeartbeats = beats;
+			stepCadenceSum = cadence;
 			if (s.isPaused())
 				s.gpsTracker.stopOrPause();
 			else
@@ -209,6 +213,7 @@ public class Step implements TickComponent {
 			lapStartTime = time;
 			lapStartDistance = dist;
 			lapStartHeartbeats = beats;
+			lapCadenceSum = cadence;
 			ContentValues tmp = new ContentValues();
 			tmp.put(DB.LAP.INTENSITY, intensity.getValue());
 			if (durationType != null) {
@@ -386,7 +391,17 @@ public class Step implements TickComponent {
 		}
 		return 0;
 	}
-	
+
+	public int getCadenceSum(Workout w, Scope s) {
+		int t = w.getCadenceSum(Scope.WORKOUT);
+		if (s == Scope.STEP) {
+			return t - stepCadenceSum;
+		} else if (s == Scope.LAP) {
+			return t - lapCadenceSum;
+		}
+		return 0;
+	}
+
 	public double getDuration(Dimension dimension) {
 		if (durationType == dimension)
 			return durationValue;

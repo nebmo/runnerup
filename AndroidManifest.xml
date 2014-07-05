@@ -150,7 +150,8 @@
 		<service
                 android:name=".export.RunnerUpLive$LiveService">
  		</service>
- 		
+        <service android:name=".pedometer.StepCounterService"
+                 android:exported="false" />
 		<receiver
 		    android:name=".workout.HeadsetButtonReceiver"
 		    android:enabled="true" >
