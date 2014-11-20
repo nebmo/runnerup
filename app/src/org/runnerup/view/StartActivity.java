@@ -577,7 +577,7 @@ public class StartActivity extends Activity implements TickListener, GpsInformat
             } else {
                 startButton.setEnabled(false);
             }
-            notificationStateManager.displayNotificationState(gpsBoundState);
+                notificationStateManager.displayNotificationState(gpsBoundState);
         }
         gpsInfoLayout.setVisibility(View.VISIBLE);
 

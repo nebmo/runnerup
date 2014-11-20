@@ -536,8 +536,6 @@ public class GpsTracker extends android.app.Service implements
                     break;
             }
             liveLog(mLocationType);
-
-            notificationStateManager.displayNotificationState(activityOngoingState);
         }
         mLastLocation = arg0;
     }

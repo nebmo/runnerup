@@ -50,7 +50,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources true
             proguardFile 'proguard.txt'
             signingConfig signingConfigs.release
@@ -76,6 +76,9 @@ dependencies {
     compile files('../GraphView/public/graphview-3.1.jar')
     provided files('libs/samsung_ble_sdk_200.jar')
     compile files('libs/antpluginlib_2.0.0.jar')
+
+    latestWearApp project(':wear')
+    compile project (':common')
 }
 
 allprojects {

@@ -33,6 +33,8 @@ public class GpsSearchingState implements NotificationState {
         builder.setContentTitle(context.getString(R.string.searching_for_gps));
         builder.setSmallIcon(R.drawable.icon);
         builder.setOnlyAlertOnce(true);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setAutoCancel(true);
     }
 
     @Override
@@ -41,7 +43,6 @@ public class GpsSearchingState implements NotificationState {
                 context.getString(R.string.gps_satellites),
                 gpsInformation.getSatellitesFixed(), gpsInformation.getSatellitesAvailable(),
                 gpsInformation.getGpsAccuracy()));
-
         return builder.build();
     }
 }
