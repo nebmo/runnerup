@@ -1,7 +1,9 @@
 package org.runnerup;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.CircledImageView;
 import android.util.Log;
@@ -19,7 +21,7 @@ import org.runnerup.common.WearConstants;
 /**
  * Created by niklas.weidemann on 2014-10-17.
  */
-public class PauseResumeCardFragment extends CardFragment{
+public class PauseResumeCardFragment extends Fragment {
 
     private static final String TAG = "PauseResumeCardFragment";
     private CircledImageView mButton;
@@ -61,7 +63,7 @@ public class PauseResumeCardFragment extends CardFragment{
     }
 
     @Override
-    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.pause_resume, container, false);
 
         super.onViewCreated(view, savedInstanceState);

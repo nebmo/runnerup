@@ -1,7 +1,9 @@
 package org.runnerup;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.wearable.view.CardFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by niklas.weidemann on 2014-10-16.
  */
-public class RunInformationCardFragment extends CardFragment {
+public class RunInformationCardFragment extends Fragment {
     private ScheduledExecutorService mGeneratorExecutor;
     private ScheduledFuture<?> mDataItemGeneratorFuture;
     private RunInformationProvider mStateProvider;
@@ -52,8 +54,9 @@ public class RunInformationCardFragment extends CardFragment {
         mGeneratorExecutor = new ScheduledThreadPoolExecutor(1);
     }
 
+
     @Override
-    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stats, container, false);
         mTextField1 = (TextView)view.findViewById(R.id.textView1);
         mTextField2 = (TextView)view.findViewById(R.id.textView2);
@@ -63,6 +66,19 @@ public class RunInformationCardFragment extends CardFragment {
         mTextFieldHeader1.setText(mHeaderText1);
         return view;
     }
+
+//    @Override
+//
+//    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View view = inflater.inflate(R.layout.stats, container, false);
+//        mTextField1 = (TextView)view.findViewById(R.id.textView1);
+//        mTextField2 = (TextView)view.findViewById(R.id.textView2);
+//        mTextField3 = (TextView)view.findViewById(R.id.textView3);
+//        mTextField4 = (TextView)view.findViewById(R.id.textView4);
+//        mTextFieldHeader1 = (TextView)view.findViewById(R.id.stats_info_type);
+//        mTextFieldHeader1.setText(mHeaderText1);
+//        return view;
+//    }
 
     @Override
     public void onResume() {

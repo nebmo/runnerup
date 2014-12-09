@@ -33,14 +33,6 @@ public class RunnerUpGridPagerAdapter extends FragmentGridPagerAdapter {
         mContext = ctx;
     }
 
-    static final int[] BG_IMAGES = new int[] {
-            R.drawable.debug_background_1,
-            R.drawable.debug_background_2,
-            R.drawable.debug_background_3,
-            R.drawable.debug_background_4,
-            R.drawable.debug_background_5
-    };
-
     /** A simple container for static data in each page */
     private static class Page {
         int titleRes;
@@ -72,22 +64,17 @@ public class RunnerUpGridPagerAdapter extends FragmentGridPagerAdapter {
     public Fragment getFragment(int row, int col) {
         Page page = PAGES[row][col];
         String title = page.titleRes != 0 ? mContext.getString(page.titleRes) : null;
-        CardFragment fragment;
+        Fragment fragment;
         if(col == 0) {
             fragment = RunInformationCardFragment.create(title);
         } else {
             fragment = PauseResumeCardFragment.create(R.string.pause);
         }
-        fragment.setCardGravity(Gravity.BOTTOM);
-        fragment.setExpansionEnabled(false);
-        fragment.setExpansionDirection(CardFragment.EXPAND_DOWN);
-        fragment.setExpansionFactor(1.0f);
+//        fragment.setCardGravity(Gravity.BOTTOM);
+//        fragment.setExpansionEnabled(false);
+//        fragment.setExpansionDirection(CardFragment.EXPAND_DOWN);
+//        fragment.setExpansionFactor(1.0f);
         return fragment;
-    }
-
-    @Override
-    public ImageReference getBackground(int row, int column) {
-        return ImageReference.forDrawable(BG_IMAGES[row % BG_IMAGES.length]);
     }
 
     @Override

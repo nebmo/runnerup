@@ -49,20 +49,20 @@ public class MainActivity extends Activity implements  RunInformationProvider{
         setContentView(R.layout.activity_main);
         final Resources res = getResources();
         final GridViewPager pager = (GridViewPager) findViewById(R.id.pager);
-        pager.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                // Adjust page margins:
-                //   A little extra horizontal spacing between pages looks a bit
-                //   less crowded on a round display.
-                final boolean round = insets.isRound();
-                int rowMargin = res.getDimensionPixelOffset(R.dimen.page_row_margin);
-                int colMargin = res.getDimensionPixelOffset(round ?
-                        R.dimen.page_column_margin_round : R.dimen.page_column_margin);
-                pager.setPageMargins(rowMargin, colMargin);
-                return insets;
-            }
-        });
+//        pager.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+//            @Override
+//            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+//                // Adjust page margins:
+//                //   A little extra horizontal spacing between pages looks a bit
+//                //   less crowded on a round display.
+//                final boolean round = insets.isRound();
+//                int rowMargin = res.getDimensionPixelOffset(R.dimen.page_row_margin);
+//                int colMargin = res.getDimensionPixelOffset(round ?
+//                        R.dimen.page_column_margin_round : R.dimen.page_column_margin);
+//                pager.setPageMargins(rowMargin, colMargin);
+//                return insets;
+//            }
+//        });
         pager.setAdapter(new RunnerUpGridPagerAdapter(this, getFragmentManager()));
     }
 
