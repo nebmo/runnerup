@@ -129,19 +129,19 @@ public class WearLiveLogger implements LiveLogger {
                     }
                 }
             }
-            dataMapRequest.getDataMap().putString("Activity Time", formatter.formatElapsedTime(Formatter.TXT_SHORT, Math.round(at)));
-            dataMapRequest.getDataMap().putString("Activity Pace", formatter.formatPace(Formatter.TXT_SHORT, ap));
-            dataMapRequest.getDataMap().putString("Activity Distance", formatter.formatDistance(Formatter.TXT_LONG, Math.round(ad)));
-            dataMapRequest.getDataMap().putString("Activity HR", formatter.formatHeartRate(Formatter.TXT_SHORT, Math.round(ah)));
-            dataMapRequest.getDataMap().putString("LAP Time", formatter.formatElapsedTime(Formatter.TXT_LONG, Math.round(st)));
-            dataMapRequest.getDataMap().putString("LAP Pace", formatter.formatPace(Formatter.TXT_SHORT, sp));
-            dataMapRequest.getDataMap().putString("LAP Distance", formatter.formatDistance(Formatter.TXT_LONG, Math.round(sd)));
-            dataMapRequest.getDataMap().putString("LAP HR", formatter.formatHeartRate(Formatter.TXT_SHORT, Math.round(sh)));
+            dataMapRequest.getDataMap().putString("Activity Time", formatter.formatElapsedTime(Formatter.GARMIN_NO_SUFFIX, Math.round(at)));
+            dataMapRequest.getDataMap().putString("Activity Pace", formatter.formatPace(Formatter.GARMIN_NO_SUFFIX, ap));
+            dataMapRequest.getDataMap().putString("Activity Distance", formatter.formatDistance(Formatter.GARMIN_NO_SUFFIX, Math.round(ad)));
+            dataMapRequest.getDataMap().putString("Activity HR", formatter.formatHeartRate(Formatter.GARMIN_NO_SUFFIX, Math.round(ah)));
+            dataMapRequest.getDataMap().putString("LAP Time", formatter.formatElapsedTime(Formatter.GARMIN_NO_SUFFIX, Math.round(st)));
+            dataMapRequest.getDataMap().putString("LAP Pace", formatter.formatPace(Formatter.GARMIN_NO_SUFFIX, sp));
+            dataMapRequest.getDataMap().putString("LAP Distance", formatter.formatDistance(Formatter.GARMIN_NO_SUFFIX, Math.round(sd)));
+            dataMapRequest.getDataMap().putString("LAP HR", formatter.formatHeartRate(Formatter.GARMIN_NO_SUFFIX, Math.round(sh)));
             dataMapRequest.getDataMap().putBoolean("IntervalActive", intervalActive);
-            dataMapRequest.getDataMap().putString("Step Time", formatter.formatElapsedTime(Formatter.TXT_LONG, Math.round(ct)));
-            dataMapRequest.getDataMap().putString("Step Pace", formatter.formatPace(Formatter.TXT_SHORT, cp));
-            dataMapRequest.getDataMap().putString("Step Distance", formatter.formatDistance(Formatter.TXT_LONG, Math.round(cd)));
-            dataMapRequest.getDataMap().putString("Step HR", formatter.formatHeartRate(Formatter.TXT_SHORT, Math.round(ch)));
+            dataMapRequest.getDataMap().putString("Step Time", formatter.formatElapsedTime(Formatter.GARMIN_NO_SUFFIX, Math.round(ct)));
+            dataMapRequest.getDataMap().putString("Step Pace", formatter.formatPace(Formatter.GARMIN_NO_SUFFIX, cp));
+            dataMapRequest.getDataMap().putString("Step Distance", formatter.formatDistance(Formatter.GARMIN_NO_SUFFIX, Math.round(cd)));
+            dataMapRequest.getDataMap().putString("Step HR", formatter.formatHeartRate(Formatter.GARMIN_NO_SUFFIX, Math.round(ch)));
             dataMapRequest.getDataMap().putString("Step Info", intervalInfo);
             dataMapRequest.getDataMap().putInt("activityStatus", type);
         }
