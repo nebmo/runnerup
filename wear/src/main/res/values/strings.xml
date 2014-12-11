@@ -7,5 +7,6 @@
     <string name="stats_title_lap">Lap</string>
     <string name="stats_title_interval">Interval</string>
     <string name="start">Resume</string>
+    <string name="exit">Exit</string>
 
 </resources>

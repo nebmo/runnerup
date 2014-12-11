@@ -31,9 +31,12 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.wearable.view.CircledImageView;
+import android.support.wearable.view.DismissOverlayView;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
 import android.widget.TextView;
@@ -54,33 +57,37 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements  RunInformationProvider{
+public class MainActivity extends Activity implements RunInformationProvider {
 
-    private static final String TAG = "MainActivity";
     private StateService mCurrentStateProviderService = null;
+    private DismissOverlayView mDismissOverlay;
+    private GestureDetector mDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Resources res = getResources();
         final GridViewPager pager = (GridViewPager) findViewById(R.id.pager);
-//        pager.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-//            @Override
-//            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-//                // Adjust page margins:
-//                //   A little extra horizontal spacing between pages looks a bit
-//                //   less crowded on a round display.
-//                final boolean round = insets.isRound();
-//                int rowMargin = res.getDimensionPixelOffset(R.dimen.page_row_margin);
-//                int colMargin = res.getDimensionPixelOffset(round ?
-//                        R.dimen.page_column_margin_round : R.dimen.page_column_margin);
-//                pager.setPageMargins(rowMargin, colMargin);
-//                return insets;
-//            }
-//        });
         pager.setAdapter(new RunnerUpGridPagerAdapter(this, getFragmentManager()));
+        // Obtain the DismissOverlayView element
+        mDismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);
+        mDismissOverlay.setIntroText(R.string.exit);
+        mDismissOverlay.showIntroIfNecessary();
+
+        // Configure a gesture detector
+        mDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            public void onLongPress(MotionEvent ev) {
+                mDismissOverlay.show();
+            }
+        });
     }
+
+    // Capture long presses
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
+    }
+
 
     @Override
     protected void onPause() {
