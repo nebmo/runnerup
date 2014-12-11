@@ -26,7 +26,7 @@ public class WearMessageService extends WearableListenerService {
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
         Intent startBroadcastIntent = new Intent();
-        startBroadcastIntent.setAction("org.runnerup.START_STOP");
+        startBroadcastIntent.setAction(messageEvent.getPath());
         getApplicationContext().sendBroadcast(startBroadcastIntent);
     }
 }

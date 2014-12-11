@@ -760,6 +760,7 @@ public class GpsTracker extends android.app.Service implements
     private void registerWorkoutBroadcastsListener() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intents.START_STOP);
+        intentFilter.addAction(Intents.NEW_LAP);
         registerReceiver(mWorkoutBroadcastReceiver, intentFilter);
     }
 

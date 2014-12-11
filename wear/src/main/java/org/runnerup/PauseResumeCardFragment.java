@@ -30,12 +30,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
 
+import org.runnerup.common.Constants;
 import org.runnerup.common.WearConstants;
 
 public class PauseResumeCardFragment extends Fragment {
 
     private static final String TAG = "PauseResumeCardFragment";
-    private CircledImageView mButton;
+    private CircledImageView mButtonPauseResume;
+    private CircledImageView mButtonNewLap;
     private TextView mLabel;
     private GoogleApiClient mGoogleAppiClient;
     private RunInformationProvider mStateProvider;
@@ -80,15 +82,22 @@ public class PauseResumeCardFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
         mLabel = (TextView) view.findViewById(R.id.label);
-        mButton = (CircledImageView) view.findViewById(R.id.icon);
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mButtonPauseResume = (CircledImageView) view.findViewById(R.id.icon);
+        mButtonPauseResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Wearable.MessageApi.sendMessage(mGoogleAppiClient,"startstop","startstop",null);
-                if(mLabel.getText().toString().equals(getString(R.string.start))) {
+                Wearable.MessageApi.sendMessage(mGoogleAppiClient, Constants.Intents.START_STOP, Constants.Intents.START_STOP, null);
+                if (mLabel.getText().toString().equals(getString(R.string.start))) {
                     mLabel.setText(R.string.pause);
                 } else
                     mLabel.setText(R.string.start);
+            }
+        });
+        mButtonNewLap = (CircledImageView) view.findViewById(R.id.icon2);
+        mButtonNewLap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Wearable.MessageApi.sendMessage(mGoogleAppiClient, Constants.Intents.NEW_LAP, Constants.Intents.NEW_LAP, null);
             }
         });
         return view;

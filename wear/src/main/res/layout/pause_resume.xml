@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.wearable.view.BoxInsetLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
     android:padding="15dp">
 
     <FrameLayout
@@ -14,23 +14,53 @@
         android:padding="5dp"
         app:layout_box="all">
 
-    <android.support.wearable.view.CircledImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:circle_color="@color/action_button"
-        app:circle_radius="40dp"
-        app:circle_border_width="0dp"/>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:orientation="vertical">
+        <android.support.wearable.view.CircledImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:circle_border_width="0dp"
+            app:circle_color="@color/action_button"
+            app:circle_radius="35dp"
+            tools:source="@drawable/ic_full_cancel"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:id="@+id/label"
-        android:fontFamily="sans-serif-condensed-light"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:text="Pause"/>
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-light"
+            android:text="Resume"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
         </FrameLayout>
-    </android.support.wearable.view.BoxInsetLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:orientation="vertical">
+        <android.support.wearable.view.CircledImageView
+            android:id="@+id/icon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:circle_border_width="0dp"
+            app:circle_color="@color/action_button"
+            app:circle_radius="35dp" />
+
+        <TextView
+            android:id="@+id/label2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-light"
+            android:layout_gravity="center"
+            android:text="Newlap"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        </FrameLayout>
+    </FrameLayout>
+
+</android.support.wearable.view.BoxInsetLayout>
