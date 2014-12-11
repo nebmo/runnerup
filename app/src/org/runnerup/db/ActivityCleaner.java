@@ -27,7 +27,7 @@ import android.os.Build;
 import java.util.ArrayList;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
-public class ActivityCleaner implements org.runnerup.util.Constants {
+public class ActivityCleaner implements org.runnerup.common.Constants {
     long _totalSumHr = 0;
     int _totalCount = 0;
     int _totalMaxHr = 0;

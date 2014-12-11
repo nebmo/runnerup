@@ -47,7 +47,7 @@ import java.util.ArrayList;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class DBHelper extends SQLiteOpenHelper implements
-        org.runnerup.util.Constants {
+        org.runnerup.common.Constants {
 
     private static final int DBVERSION = 26;
     private static final String DBNAME = "runnerup.db";

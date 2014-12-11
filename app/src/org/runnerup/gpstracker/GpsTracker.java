@@ -52,7 +52,7 @@ import org.runnerup.notification.ForegroundNotificationDisplayStrategy;
 import org.runnerup.notification.NotificationState;
 import org.runnerup.notification.NotificationStateManager;
 import org.runnerup.notification.OngoingState;
-import org.runnerup.util.Constants;
+import org.runnerup.common.Constants;
 import org.runnerup.util.Formatter;
 import org.runnerup.workout.HeadsetButtonReceiver;
 import org.runnerup.workout.Workout;

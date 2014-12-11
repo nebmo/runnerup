@@ -1,8 +1,20 @@
-package org.runnerup;
-
-/**
- * Created by niklas.weidemann on 2014-10-12.
+/*
+ * Copyright (C) 2014 weides@gmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.runnerup;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -25,7 +37,6 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
-
 import org.runnerup.common.WearConstants;
 
 import static com.google.android.gms.wearable.PutDataRequest.WEAR_URI_SCHEME;
@@ -36,7 +47,6 @@ public class NotificationUpdateService extends WearableListenerService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("NotificationUpdateService", "onStartCommand");
         if (null != intent) {
             String action = intent.getAction();
             if (WearConstants.ACTION_DISMISS.equals(action)) {
@@ -51,7 +61,6 @@ public class NotificationUpdateService extends WearableListenerService {
 
         for (DataEvent dataEvent : dataEvents) {
             if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
-                Log.d("NotificationUpdateService", "onDataChanged:"+dataEvent.getDataItem().getUri().getPath());
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(dataEvent.getDataItem());
 
                 if (WearConstants.NOTIFICATION_PATH.equals(dataEvent.getDataItem().getUri().getPath())) {
@@ -61,7 +70,6 @@ public class NotificationUpdateService extends WearableListenerService {
                 }
 
                 dataMapItem = DataMapItem.fromDataItem(dataEvent.getDataItem());
-                Log.d("NotificationUpdateService", "onDataChanged:"+dataEvent.getDataItem().getUri().getPath());
                 Intent intent = new Intent(this, StateService.class);
                 intent.putExtras(dataMapItem.getDataMap().toBundle());
                 getApplicationContext().startService(intent);

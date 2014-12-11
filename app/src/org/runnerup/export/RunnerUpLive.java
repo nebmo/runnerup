@@ -37,7 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.runnerup.R;
 import org.runnerup.gpstracker.WorkoutProvider;
-import org.runnerup.util.Constants.DB;
+import org.runnerup.common.Constants.DB;
 import org.runnerup.util.Formatter;
 import org.runnerup.workout.Scope;
 

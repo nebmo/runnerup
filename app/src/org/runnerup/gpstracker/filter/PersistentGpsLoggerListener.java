@@ -28,7 +28,7 @@ import org.runnerup.gpstracker.LocationListenerBase;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class PersistentGpsLoggerListener extends LocationListenerBase implements
-        org.runnerup.util.Constants {
+        org.runnerup.common.Constants {
     private final java.lang.Object mLock;
     private SQLiteDatabase mDB;
     private java.lang.String mTable;

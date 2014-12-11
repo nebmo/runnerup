@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.runnerup.util;
+package org.runnerup.common;
 
 public interface Constants {
 

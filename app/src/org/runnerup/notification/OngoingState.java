@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import org.runnerup.R;
 import org.runnerup.gpstracker.WorkoutProvider;
-import org.runnerup.util.Constants;
+import org.runnerup.common.Constants;
 import org.runnerup.util.Formatter;
 import org.runnerup.view.RunActivity;
 import org.runnerup.workout.Scope;

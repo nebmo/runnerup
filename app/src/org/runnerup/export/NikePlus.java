@@ -29,8 +29,8 @@ import org.runnerup.export.format.GPX;
 import org.runnerup.export.format.NikeXML;
 import org.runnerup.feed.FeedList;
 import org.runnerup.feed.FeedList.FeedUpdater;
-import org.runnerup.util.Constants.DB;
-import org.runnerup.util.Constants.DB.FEED;
+import org.runnerup.common.Constants.DB;
+import org.runnerup.common.Constants.DB.FEED;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

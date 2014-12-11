@@ -1,10 +1,24 @@
+/*
+ * Copyright (C) 2014 weides@gmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.runnerup;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.CircledImageView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,9 +32,6 @@ import com.google.android.gms.wearable.Wearable;
 
 import org.runnerup.common.WearConstants;
 
-/**
- * Created by niklas.weidemann on 2014-10-17.
- */
 public class PauseResumeCardFragment extends Fragment {
 
     private static final String TAG = "PauseResumeCardFragment";
@@ -47,6 +58,7 @@ public class PauseResumeCardFragment extends Fragment {
                         Log.d(TAG, "onConnected: " + connectionHint);
                         // Now you can use the data layer API
                     }
+
                     @Override
                     public void onConnectionSuspended(int cause) {
                         Log.d(TAG, "onConnectionSuspended: " + cause);
@@ -86,7 +98,7 @@ public class PauseResumeCardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mGoogleAppiClient.connect();
-        if(mStateProvider.getRunInformation() == null) return;
+        if (mStateProvider.getRunInformation() == null) return;
         int state = mStateProvider.getRunInformation().getInt("activityStatus");
 
         switch (state) {
