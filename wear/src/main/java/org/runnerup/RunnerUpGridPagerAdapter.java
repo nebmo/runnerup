@@ -19,10 +19,7 @@ package org.runnerup;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
-import android.support.wearable.view.ImageReference;
-import android.view.Gravity;
 
 public class RunnerUpGridPagerAdapter extends FragmentGridPagerAdapter {
 

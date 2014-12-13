@@ -57,7 +57,7 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements RunInformationProvider {
+public class MainActivity extends Activity implements RunInformationProvider, View.OnTouchListener {
 
     private StateService mCurrentStateProviderService = null;
     private DismissOverlayView mDismissOverlay;
@@ -69,6 +69,7 @@ public class MainActivity extends Activity implements RunInformationProvider {
         setContentView(R.layout.activity_main);
         final GridViewPager pager = (GridViewPager) findViewById(R.id.pager);
         pager.setAdapter(new RunnerUpGridPagerAdapter(this, getFragmentManager()));
+        pager.setOnTouchListener(this);
         // Obtain the DismissOverlayView element
         mDismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);
         mDismissOverlay.setIntroText(R.string.exit);
@@ -88,6 +89,10 @@ public class MainActivity extends Activity implements RunInformationProvider {
         return mDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
 
     @Override
     protected void onPause() {
@@ -122,4 +127,5 @@ public class MainActivity extends Activity implements RunInformationProvider {
     public Bundle getRunInformation() {
         return mCurrentStateProviderService != null ? mCurrentStateProviderService.getCurrentInfo() : null;
     }
+
 }
