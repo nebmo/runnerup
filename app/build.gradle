@@ -66,7 +66,7 @@ android {
 }
 
 dependencies {
-    latestCompile 'com.android.support:support-v4:20.0.0'
+    latestCompile 'com.android.support:support-v4:21.0.0'
     latestCompile 'com.google.android.gms:play-services:6.1.11'
 
     froyoCompile 'com.android.support:support-v4:19.1.+'

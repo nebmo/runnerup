@@ -14,7 +14,7 @@
         android:padding="5dp"
         app:layout_box="all">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
@@ -23,6 +23,7 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_av_play_arrow"
             app:circle_border_width="0dp"
             app:circle_color="@color/action_button"
             app:circle_radius="35dp"
@@ -37,16 +38,18 @@
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp" />
-        </FrameLayout>
-        <FrameLayout
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:orientation="vertical">
+
         <android.support.wearable.view.CircledImageView
             android:id="@+id/icon2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_av_newlap"
             app:circle_border_width="0dp"
             app:circle_color="@color/action_button"
             app:circle_radius="35dp" />
@@ -60,7 +63,7 @@
             android:text="Newlap"
             android:textColor="@color/white"
             android:textSize="20sp" />
-        </FrameLayout>
+        </LinearLayout>
     </FrameLayout>
 
 </android.support.wearable.view.BoxInsetLayout>

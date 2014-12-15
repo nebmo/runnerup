@@ -19,12 +19,10 @@ package org.runnerup;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.wearable.view.CardFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.runnerup.common.WearConstants;
@@ -44,6 +42,7 @@ public class RunInformationCardFragment extends Fragment {
     private TextView mTextField4;
     private TextView mTextFieldHeader1;
     private String mHeaderText1 = "";
+    private ImageView mIconHeartRate;
 
     public static RunInformationCardFragment create(String title) {
         RunInformationCardFragment fragment = new RunInformationCardFragment();
@@ -76,6 +75,7 @@ public class RunInformationCardFragment extends Fragment {
         mTextField2 = (TextView) view.findViewById(R.id.textView2);
         mTextField3 = (TextView) view.findViewById(R.id.textView3);
         mTextField4 = (TextView) view.findViewById(R.id.textView4);
+        mIconHeartRate = (ImageView) view.findViewById(R.id.imageHeart);
         mTextFieldHeader1 = (TextView) view.findViewById(R.id.stats_info_type);
         mTextFieldHeader1.setText(mHeaderText1);
         return view;
@@ -117,6 +117,9 @@ public class RunInformationCardFragment extends Fragment {
                     mTextField4.setText(bundle.getString("Step HR"));
                     mTextFieldHeader1.setText(bundle.getString("Step Info"));
                     mTextFieldHeader1.setTextAppearance(getActivity(), android.R.style.TextAppearance_DeviceDefault_Small);
+                }
+                if (mTextField4.getText().equals("") || mTextField4.getText().equals("")) {
+                    mIconHeartRate.setVisibility(View.GONE);
                 }
             }
 

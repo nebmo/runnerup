@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.wearable.view.CircledImageView;
 import android.support.wearable.view.DismissOverlayView;
+import android.support.wearable.view.DotsPageIndicator;
 import android.support.wearable.view.GridViewPager;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
@@ -69,6 +70,8 @@ public class MainActivity extends Activity implements RunInformationProvider, Vi
         setContentView(R.layout.activity_main);
         final GridViewPager pager = (GridViewPager) findViewById(R.id.pager);
         pager.setAdapter(new RunnerUpGridPagerAdapter(this, getFragmentManager()));
+        DotsPageIndicator dotsPageIndicator = (DotsPageIndicator) findViewById(R.id.page_indicator);
+        dotsPageIndicator.setPager(pager);
         pager.setOnTouchListener(this);
         // Obtain the DismissOverlayView element
         mDismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);

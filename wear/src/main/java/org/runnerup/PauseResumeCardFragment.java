@@ -89,8 +89,11 @@ public class PauseResumeCardFragment extends Fragment {
                 Wearable.MessageApi.sendMessage(mGoogleAppiClient, Constants.Intents.START_STOP, Constants.Intents.START_STOP, null);
                 if (mLabel.getText().toString().equals(getString(R.string.start))) {
                     mLabel.setText(R.string.pause);
-                } else
+                    mButtonPauseResume.setImageResource(R.drawable.ic_av_pause);
+                } else {
                     mLabel.setText(R.string.start);
+                    mButtonPauseResume.setImageResource(R.drawable.ic_av_play_arrow);
+                }
             }
         });
         mButtonNewLap = (CircledImageView) view.findViewById(R.id.icon2);
