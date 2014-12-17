@@ -30,6 +30,7 @@ import android.text.format.DateUtils;
 import org.runnerup.R;
 import org.runnerup.workout.Dimension;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
@@ -56,6 +57,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
     public static final int TXT = 4; // same as TXT_SHORT
     public static final int TXT_SHORT = 5; // brief for printing
     public static final int TXT_LONG = 6; // long for printing
+    public static final int GARMIN_NO_SUFFIX = 7; // long for printing
 
     public Formatter(Context ctx) {
         context = ctx;
@@ -165,6 +167,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
                 return cueElapsedTime(seconds, true);
             case TXT:
             case TXT_SHORT:
+            case GARMIN_NO_SUFFIX:
                 return DateUtils.formatElapsedTime(seconds);
             case TXT_LONG:
                 return txtElapsedTime(seconds);
@@ -250,7 +253,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
      * Format heart rate
      *
      * @param target
-     * @param bpm
+     * @param heart_rate
      * @return
      */
     public String formatHeartRate(int target, double heart_rate) {
@@ -263,6 +266,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
             case TXT:
             case TXT_SHORT:
             case TXT_LONG:
+            case GARMIN_NO_SUFFIX:
                 return Integer.toString((int) Math.round(heart_rate));
         }
         return "";
@@ -272,6 +276,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
         switch (target) {
             case TXT:
             case TXT_SHORT:
+            case GARMIN_NO_SUFFIX:
                 return Integer.toString((int) Math.round(hrZone));
             case TXT_LONG:
                 return Double.toString(Math.round(10.0 * hrZone) / 10.0);
@@ -301,6 +306,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
                 return cuePace(seconds_per_meter);
             case TXT:
             case TXT_SHORT:
+            case GARMIN_NO_SUFFIX:
                 return txtPace(seconds_per_meter, false);
             case TXT_LONG:
                 return txtPace(seconds_per_meter, true);
@@ -309,7 +315,7 @@ public class Formatter implements OnSharedPreferenceChangeListener {
     }
 
     /**
-     * @param speed_meter_per_second
+     * @param seconds_per_meter
      * @return string suitable for printing according to settings
      */
     private String txtPace(double seconds_per_meter, boolean includeUnit) {
@@ -472,8 +478,20 @@ public class Formatter implements OnSharedPreferenceChangeListener {
                 return cueDistance(meters, true);
             case TXT_LONG:
                 return Long.toString(meters) + " m";
+            case GARMIN_NO_SUFFIX:
+                return garminDistance(meters);
         }
         return null;
+    }
+
+    private String garminDistance(long meters) {
+        double base_val = km_meters; // 1km
+        if (!km) {
+            base_val = mi_meters;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        return df.format(meters / base_val);
     }
 
     private String cueDistance(long meters, boolean txt) {

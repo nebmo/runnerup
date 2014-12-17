@@ -41,7 +41,6 @@ public class GpsSearchingState implements NotificationState {
                 context.getString(R.string.gps_satellites),
                 gpsInformation.getSatellitesFixed(), gpsInformation.getSatellitesAvailable(),
                 gpsInformation.getGpsAccuracy()));
-
         return builder.build();
     }
 }

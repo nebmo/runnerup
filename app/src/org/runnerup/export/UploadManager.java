@@ -1041,5 +1041,9 @@ public class UploadManager {
             if (c != null)
                 c.close();
         }
+
+        if (Build.VERSION.SDK_INT >= 18) {
+            liveLoggers.add(new WearLiveLogger(context));
+        }
     }
 }

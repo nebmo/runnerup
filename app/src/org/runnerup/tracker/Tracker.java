@@ -573,8 +573,6 @@ public class Tracker extends android.app.Service implements
                     break;
             }
             liveLog(mLocationType);
-
-            notificationStateManager.displayNotificationState(activityOngoingState);
         }
         mLastLocation = arg0;
     }
@@ -738,6 +736,7 @@ public class Tracker extends android.app.Service implements
     private void registerWorkoutBroadcastsListener() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intents.START_STOP);
+        intentFilter.addAction(Intents.NEW_LAP);
         registerReceiver(mWorkoutBroadcastReceiver, intentFilter);
     }
 
